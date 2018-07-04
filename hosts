@@ -1,0 +1,30 @@
+# Inventory Map
+#
+# all:
+#   children:
+#     usa:
+#       children:
+#         southeast:
+#           children:
+#             atlanta:
+#               hosts:
+#                 host1:
+#                 host2:
+#             raleigh:
+#               hosts:
+#                 host2:
+#                 host3:
+#           vars:
+#             some_server: foo.southeast.example.com
+#             halon_system_timeout: 30
+#             self_destruct_countdown: 60
+#             escape_pods: 2
+#         northeast:
+#         northwest:
+#         southwest:
+
+[vm-nas]
+127.0.0.1:2222 ansible_user=vagrant ansible_python_interpreter=/usr/bin/python3 ansible_ssh_private_key_file=/srv/ansible/keys/machine_rsa
+ 
+[nas]
+vm-machine ansible_user=ansible ansible_python_interpreter=/usr/bin/python3
