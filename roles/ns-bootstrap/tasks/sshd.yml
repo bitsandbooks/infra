@@ -1,0 +1,15 @@
+---
+- name: sshd - ensure x11 forwarding is off
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^X11Forwarding '
+    line: 'X11Forwarding no'
+  tags: always
+
+- name: sshd - ensure ssh can get through the firewall
+  ufw:
+    rule: allow
+    port: 22
+    proto: "tcp"
+  when: (ansible_distribution == "Ubuntu") or
+        (ansible_distribution == "Debian")

@@ -1,0 +1,22 @@
+---
+- name: start fail2ban
+  systemd:
+    name: fail2ban.service
+    state: started
+    enabled: yes
+
+- name: restart fail2ban
+  systemd:
+    name: fail2ban.service
+    state: restarted
+
+- name: start ufw
+  systemd:
+    name: ufw.service
+    state: started
+    enabled: yes
+
+- name: restart ufw
+  systemd:
+    name: ufw.service
+    state: restarted

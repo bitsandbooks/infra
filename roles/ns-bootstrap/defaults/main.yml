@@ -1,0 +1,6 @@
+---
+default_group: 
+  name: mygroup
+  gid: 200
+
+default_ssh_port: 22

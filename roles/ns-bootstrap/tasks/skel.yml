@@ -1,0 +1,57 @@
+---
+- name: skel - ensure presence of media folders in `/etc/skel`
+  file: 
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - /etc/skel/backups
+    - /etc/skel/media/books
+    - /etc/skel/media/movies
+    - /etc/skel/media/music
+    - /etc/skel/media/photos
+    - /etc/skel/media/tv
+    - /etc/skel/media/videos
+    - /etc/skel/sites
+  tags: always
+
+- name: skel - ensure presence, permissions of `/etc/skel/media/private`
+  file:
+    path: /etc/skel/media/private
+    state: directory
+    mode: 0700
+    owner: root
+    group: root
+  tags: always
+
+- name: skel - ensure presence, permissions of `/etc/skel/.ssh` and `/etc/skel/.ssh/sockets`
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0700
+    owner: root
+    group: root
+  with_items:
+    - /etc/skel/.ssh
+    - /etc/skel/.ssh/sockets
+  tags: always
+
+- name: skel - ensure presence, permissions of ssh files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_items:
+    - src: ssh-config.txt
+      dest: /etc/skel/.ssh/config
+    - src: authorized-keys.txt
+      dest: /etc/skel/.ssh/authorized_keys
+    - src: known-hosts.txt
+      dest: /etc/skel/.ssh/known_hosts
+  tags:
+    - always
+

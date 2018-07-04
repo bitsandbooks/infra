@@ -1,0 +1,13 @@
+# SSH Configuration
+Host *
+    IdentityFile ~/.ssh/id_rsa
+    IdentitiesOnly yes
+    VisualHostKey no
+    KeepAlive yes
+    ServerAliveInterval 60
+    ServerAliveCountMax 30
+    Compression yes
+    ControlPath ~/.ssh/sockets/%r@%h-%p
+    ControlMaster auto
+    ControlPersist 5m
+    PreferredAuthentications publickey

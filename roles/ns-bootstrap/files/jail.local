@@ -1,0 +1,14 @@
+# JAILS
+
+[ssh]
+enabled  = true
+port     = ssh
+filter   = sshd
+logpath  = /var/log/auth.log
+maxretry = 6
+
+[nginx-http-auth]
+enabled = false
+filter  = nginx-http-auth
+port    = http,https
+logpath = /var/log/nginx/error.log

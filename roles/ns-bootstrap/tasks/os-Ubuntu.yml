@@ -1,0 +1,52 @@
+---
+- name: ensure presence of common ubuntu packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - bash-completion
+    - ca-certificates
+    - curl
+    - fail2ban
+    - git
+    - software-properties-common
+    - ufw
+    - vim
+  notify:
+    - start fail2ban
+    - start ufw
+  tags:
+    - ubuntu
+    - linux
+
+- name: get rid of annoying help text in `/etc/update-motd.d/`
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/update-motd.d/10-help-text
+    - /etc/update-motd.d/51-cloudguest
+  tags:
+    - ubuntu
+    - linux
+
+- name: ensure ufw is enabled and default policy is "deny"
+  ufw:
+    state: enabled
+    policy: deny
+
+- name: security - ensure ssh port is allowed through ufw
+  ufw:
+    rule: allow
+    port: "{{ default_ssh_port }}"
+    log: yes
+
+- name: ensure fail2ban jail.local is present
+  copy:
+    src: jail.local
+    dest: /etc/fail2ban/jail.local
+    mode: 0600
+    owner: root
+    group: root
+  notify: restart fail2ban

@@ -1,0 +1,30 @@
+---
+- name: root - ensure presence, permissions of `/root/.ssh/`
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0700
+    owner: root
+    group: root
+  with_items:
+    - /root/.ssh
+    - /root/.ssh/sockets
+  tags: always
+
+- name: root - ensure presence, permissions of `/root/.ssh/authorized_keys`
+  file:
+    dest: /root/.ssh/authorized_keys
+    state: file
+    mode: 0644
+    owner: root
+    group: root
+  tags: always
+
+- name: root - ensure presence, permissions of default ssh config file
+  copy:
+    src: ssh-config.txt
+    dest: /root/.ssh/config
+    mode: 0600
+    owner: root
+    group: root
+  tags: always
