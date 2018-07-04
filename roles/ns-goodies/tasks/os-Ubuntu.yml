@@ -1,12 +1,12 @@
 ---
-- name: ensure packages are installed, services started
+- name: ubuntu - ensure packages are installed, services started
   apt:
     name: "{{ item }}"
     state: present
   with_items:
     - figlet
 
-- name: ensure presence of figlet-ed hostname
+- name: ubuntu - ensure presence of figlet-ed hostname
   copy:
     src: hostname-figlet.sh
     dest: /etc/update-motd.d/00-figlet

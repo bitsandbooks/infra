@@ -1,0 +1,32 @@
+---
+- name: ubuntu - ensure docker apt repo key is present
+  apt_key:
+    url: "{{ docker.apt_repo_key }}"
+    state: present
+
+- name: ubuntu - ensure docker apt repo is present
+  apt_repository:
+    repo: "{{ docker.apt_repo }}"
+    state: present
+
+- name: ubuntu - ensure docker-ce is installed
+  apt:
+    name: "{{ docker.apt_package }}"
+    state: present
+
+- name: ubuntu - install `docker-py` pip package
+  pip:
+    name: docker-py
+
+- name: ubuntu - pull registry image
+  docker_image:
+    name: registry
+    tag: 2
+
+- name: ubuntu - ensure registry is running
+  docker_container:
+    name: "{{ hostname }}-registry"
+    image: registry
+    restart_policy: always
+    ports:
+      - "127.0.0.1:5000:5000"

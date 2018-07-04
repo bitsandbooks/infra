@@ -1,0 +1,9 @@
+---
+hostname: myhost
+
+docker:
+  apt_package: "docker-ce"
+  # docker does not yet provide packages for 18.04, so we'll use 17.10's package
+  # apt_repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+  apt_repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu artful stable"
+  apt_repo_key: "https://download.docker.com/linux/ubuntu/gpg"

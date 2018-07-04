@@ -1,6 +1,6 @@
 ---
-- name: ensure presence of common ubuntu packages
-  package:
+- name: ubuntu - ensure presence of common ubuntu packages
+  apt:
     name: "{{ item }}"
     state: present
   with_items:
@@ -10,6 +10,7 @@
     - curl
     - fail2ban
     - git
+    - python3-pip
     - software-properties-common
     - ufw
     - vim
@@ -20,7 +21,7 @@
     - ubuntu
     - linux
 
-- name: get rid of annoying help text in `/etc/update-motd.d/`
+- name: ubuntu - get rid of annoying help text in `/etc/update-motd.d/`
   file:
     path: "{{ item }}"
     state: absent
@@ -31,18 +32,18 @@
     - ubuntu
     - linux
 
-- name: ensure ufw is enabled and default policy is "deny"
+- name: ubuntu - ensure ufw is enabled and default policy is "deny"
   ufw:
     state: enabled
     policy: deny
 
-- name: security - ensure ssh port is allowed through ufw
+- name: ubuntu - ensure ssh port is allowed through ufw
   ufw:
     rule: allow
     port: "{{ default_ssh_port }}"
     log: yes
 
-- name: ensure fail2ban jail.local is present
+- name: ubuntu - ensure fail2ban jail.local is present
   copy:
     src: jail.local
     dest: /etc/fail2ban/jail.local
