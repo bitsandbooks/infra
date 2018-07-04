@@ -1,17 +1,22 @@
 ---
 - name: ubuntu - ensure docker apt repo key is present
   apt_key:
-    url: "{{ docker.apt_repo_key }}"
+    url: "{{ docker.ubuntu_apt_repo_key }}"
     state: present
 
 - name: ubuntu - ensure docker apt repo is present
   apt_repository:
-    repo: "{{ docker.apt_repo }}"
+    repo: "{{ docker.ubuntu_apt_repo }}"
     state: present
 
 - name: ubuntu - ensure docker-ce is installed
   apt:
-    name: "{{ docker.apt_package }}"
+    name: "{{ docker.ubuntu_apt_package }}"
+    state: present
+
+- name: ubuntu - ensure python3-pip is installed
+  apt:
+    name: python3-pip
     state: present
 
 - name: ubuntu - install `docker-py` pip package
