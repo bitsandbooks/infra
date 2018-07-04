@@ -1,0 +1,7 @@
+.DS_Store
+.vagrant
+group_vars/all/secrets.yml
+keys
+roles/bitsandbooks.*
+roles/bitsandbooks.ns-bootstrap
+roles/bitsandbooks.ns-bootstrap/*
