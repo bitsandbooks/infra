@@ -1,0 +1,154 @@
+---
+- name: ubuntu - ensure docker apt repo key is present
+  apt_key:
+    url: "{{ docker.apt_repo_key }}"
+    state: present
+
+- name: ubuntu - ensure docker apt repo is present
+  apt_repository:
+    repo: "{{ docker.apt_repo }}"
+    state: present
+    filename: "{{ docker.apt_package }}"
+
+- name: ubuntu - ensure plex apt repo key is present
+  apt_key:
+    url: "{{ plex.apt_repo_key }}"
+    state: present
+
+- name: ubuntu - ensure plex repo is present
+  apt_repository:
+    repo: "{{ plex.apt_repo }}"
+    state: present
+    filename: "{{ plex.apt_package }}"
+
+- name: ensure presence of samba config folder
+  file:
+    path: /etc/samba
+    state: directory
+    mode: 0750
+    owner: root
+    group: root
+
+- name: ubuntu - ensure packages are installed, services started (this might take a while)
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apcupsd
+    - aufs-tools
+    - avahi-daemon
+    - docker-ce
+    - netatalk
+    - python3-pip
+    - samba
+    - zfsutils-linux
+  notify:
+    - start apcupsd
+    - start avahi
+    - start docker
+    - start netatalk
+    - start samba
+
+- name: ubuntu - ensure apcupsd configuration files are present
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+  notify: 
+    - restart apcupsd
+  with_items:
+    - src: apcupsd.conf
+      dest: /etc/apcupsd/apcupsd.conf
+    - src: apcupsd.default
+      dest: /etc/default/apcupsd
+
+- name: ubuntu - ensure plexmediaserver package is present (this might take a while)
+  apt:
+    name: "{{ plex.apt_package }}"
+    state: present
+    update_cache: yes
+    allow_unauthenticated: yes
+  notify:
+    - start plex
+
+- name: ubuntu - ensure plex logs are symlinked into /var/log
+  file:
+    src: "{{ plex.data_folder }}/Library/Application Support/Plex Media Server/Logs"
+    dest: "{{ plex.logs_folder }}"
+    state: link
+    owner: "{{ plex.user }}"
+    group: "{{ default_group.name }}"
+
+- name: ubuntu - ensure samba config files are in place
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - src: avahi-samba.xml
+      dest: /etc/avahi/services/smbd.service
+    - src: smb.conf
+      dest: /etc/samba/smb.conf
+  notify: restart samba
+
+- name: ubuntu - ensure users are in the samba password file
+  shell: "(echo {{ item.upasswd }}; echo {{ item.upasswd }}) | smbpasswd -s -a {{ item.username }}"
+  with_items: "{{ sudo_users }}"
+  notify: restart samba
+
+- name: ubuntu - ensure netatalk config files are in place
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - src: applevolumes.default
+      dest: /etc/netatalk/AppleVolumes.default
+    - src: avahi-netatalk.xml
+      dest: /etc/avahi/services/afpd.service
+  notify: 
+    - restart netatalk
+
+- name: ubuntu - add sudo users to service groups
+  user:
+    name: "{{ item.username }}"
+    append: yes
+    groups:
+      - avahi
+      - docker
+  with_items: "{{ sudo_users }}"
+
+- name: ubuntu - allow services through firewall
+  ufw:
+    rule: allow
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items:
+    - port: 80 # http
+      proto: "tcp"
+    - port: 443 # https
+      proto: "tcp"
+    - port: 445 # samba
+      proto: "tcp"
+    - port: 548 # netatalk
+      proto: "tcp"
+    - port: 1900 # plex
+      proto: "udp"
+    - port: 3005 # plex
+      proto: "tcp"
+    - port: 5353 # plex
+      proto: "udp"
+    - port: 8324 # plex
+      proto: "tcp"
+    - port: 32400 # plex
+      proto: "tcp"
+    - port: 32410 # plex
+      proto: "udp"
+    - port: 32412 # plex
+      proto: "udp"
+    - port: 32413 # plex
+      proto: "udp"
+    - port: 32414 # plex
+      proto: "udp"
+    - port: 32469 # plex
+      proto: "tcp"
+

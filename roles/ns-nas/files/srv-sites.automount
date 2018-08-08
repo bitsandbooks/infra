@@ -1,0 +1,11 @@
+# /etc/systemd/system/srv-sites.automount
+# Managed by Ansible - DO NOT EDIT BY HAND
+
+[Unit]
+Description=/srv/sites (automount)
+
+[Mount]
+Where=/srv/sites
+
+[Install]
+WantedBy=multi-user.target

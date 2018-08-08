@@ -1,0 +1,49 @@
+---
+- name: ensure share symlinks for users exist
+  file:
+    name: "/srv/{{ item.username }}"
+    src: "/home/{{ item.username }}"
+    state: link
+  with_items: "{{ sudo_users }}"
+
+- name: ensure presence of `/srv/media` and `/srv/sites` folders
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "/srv/media"
+    - "/srv/sites"
+
+- name: ensure presence of systemd mounts for `/srv/sites` and `/srv/media`
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+  notify: 
+    - enable srv-media automount
+    - mount srv-media
+    - enable srv-sites automount
+    - mount srv-sites
+  with_items:
+    - src: srv-media.mount
+      dest: /etc/systemd/system/srv-media.mount
+    - src: srv-media.automount
+      dest: /etc/systemd/system/srv-media.automount
+    - src: srv-sites.mount
+      dest: /etc/systemd/system/srv-sites.mount
+    - src: srv-sites.automount
+      dest: /etc/systemd/system/srv-sites.automount
+
+- name: ensure presence of media samba config file
+  copy:
+    src: media.smb.conf
+    dest: /etc/samba/media.smb.conf
+    mode: 0640
+    owner: root
+    group: root
+
+- name: os-specific tasks
+  include: 'os-{{ ansible_distribution }}.yml'
+
+- import_tasks: docker.yml

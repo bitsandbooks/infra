@@ -1,0 +1,6 @@
+# /etc/netatalk/AppleVolumes.default
+# Managed by Ansible - DO NOT EDIT BY HAND
+
+:DEFAULT: options:upriv,usedots
+/srv/rob/backups/timemachine "Rob's Time Capsule" options:tm volsizelimit:1000000 allow:rob allowed_hosts:192.168.0.0/16
+/srv/julie/backups/timemachine "Julie's Time Capsule" options:tm volsizelimit:1000000 allow:julie allowed_hosts:192.168.0.0/16

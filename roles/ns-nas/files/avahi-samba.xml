@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone='no'?>
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<!-- 
+/etc/avahi/services/smbd.service
+Managed by Ansible - DO NOT EDIT BY HAND 
+-->
+<service-group>
+	<name replace-wildcards="yes">%h</name>
+	<service>
+		<type>_smb._tcp</type>
+		<port>445</port>
+	</service>
+	<service>
+		<type>_device-info._tcp</type>
+		<port>0</port>
+		<txt-record>model=Xserve</txt-record>
+	</service>
+</service-group>

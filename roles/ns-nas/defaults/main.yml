@@ -1,0 +1,15 @@
+---
+docker:
+  # docker does not yet provide packages for 18.04, so we use 17.10's package
+  # apt_repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+  apt_repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu artful stable"
+  apt_repo_key: "https://download.docker.com/linux/ubuntu/gpg"
+  apt_package: "docker-ce"
+
+plex:
+  apt_repo: "deb https://downloads.plex.tv/repo/deb public main"
+  apt_repo_key: "https://downloads.plex.tv/plex-keys/PlexSign.key"
+  apt_package: plexmediaserver
+  data_folder: "/var/lib/plexmediaserver"
+  logs_folder: "/var/log/plex"
+  user: "plex"

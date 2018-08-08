@@ -1,0 +1,11 @@
+# /etc/systemd/system/srv-media.automount
+# Managed by Ansible - DO NOT EDIT BY HAND
+
+[Unit]
+Description=/srv/media (read-only, automount)
+
+[Mount]
+Where=/srv/media
+
+[Install]
+WantedBy=multi-user.target

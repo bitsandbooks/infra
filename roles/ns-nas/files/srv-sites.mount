@@ -1,0 +1,17 @@
+# /etc/systemd/system/srv-sites.mount
+# Managed by Ansible - DO NOT EDIT BY HAND
+# NOTE: This aufs mount requires ZFS to be installed on the host
+
+[Unit]
+Description=/srv/sites (read-write, mount)
+Requires=zfs.target
+After=zfs.target
+
+[Mount]
+What=none
+Where=/srv/sites
+Type=aufs
+Options=rw,br=/etc/skel/sites:/home/rob/sites:/home/julie/sites
+
+[Install]
+WantedBy=multi-user.target

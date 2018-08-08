@@ -1,0 +1,4 @@
+# /etc/default/apcupsd
+# Managed by Ansible - DO NOT EDIT BY HAND
+APCACCESS=/sbin/apcaccess
+ISCONFIGURED=yes

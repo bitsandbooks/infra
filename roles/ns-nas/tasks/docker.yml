@@ -1,0 +1,25 @@
+---
+- name: docker - install `docker-py` pip package
+  pip:
+    name: docker-py
+  tags:
+    - docker
+    - python
+    - pip
+
+- name: docker - pull registry image
+  docker_image:
+    name: registry
+    tag: 2
+  tags:
+    - docker
+
+#- name: docker - ensure registry is running
+#  docker_container:
+#    name: ganesha_registry
+#    image: registry
+#    restart_policy: always
+#    ports:
+#      - "127.0.0.1:5000:5000"
+#  tags:
+#    - docker

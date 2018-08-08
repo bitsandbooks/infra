@@ -1,0 +1,16 @@
+# /etc/systemd/system/srv-media.mount
+# Managed by Ansible - DO NOT EDIT BY HAND
+
+[Unit]
+Description=/srv/media (read-only, mount)
+Requires=zfs.target
+After=zfs.target
+
+[Mount]
+What=none
+Where=/srv/media
+Type=aufs
+Options=ro,br=/etc/skel/media:/home/rob/media:/home/julie/media
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,114 @@
+---
+- name: start apcupsd
+  systemd: 
+    name: apcupsd.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: restart apcupsd
+  systemd: 
+    name: apcupsd.service
+    state: restarted
+    enabled: yes
+
+- name: start avahi
+  systemd: 
+    name: avahi-daemon.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: start docker
+  systemd:
+    name: docker.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: start fail2ban
+  systemd:
+    name: fail2ban.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: restart fail2ban
+  systemd:
+    name: fail2ban.service
+    state: restarted
+
+- name: start netatalk
+  systemd: 
+    name: netatalk.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: restart netatalk
+  systemd: 
+    name: netatalk.service
+    state: restarted
+    daemon_reload: yes
+
+- name: start plex
+  systemd: 
+    name: plexmediaserver.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: restart plex
+  systemd: 
+    name: plexmediaserver.service
+    state: restarted
+
+- name: start samba
+  systemd: 
+    name: smbd.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: restart samba
+  systemd: 
+    name: smbd.service
+    state: restarted
+
+- name: enable srv-media automount
+  systemd:
+    name: srv-media.automount
+    enabled: yes
+    daemon_reload: yes
+
+- name: mount srv-media
+  systemd:
+    name: srv-media.mount
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: enable srv-sites automount
+  systemd:
+    name: srv-sites.automount
+    enabled: yes
+    daemon_reload: yes
+
+- name: mount srv-sites
+  systemd:
+    name: srv-sites.mount
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: start ufw
+  systemd:
+    name: ufw.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: restart ufw
+  systemd:
+    name: ufw.service
+    state: restarted
