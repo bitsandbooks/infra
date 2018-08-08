@@ -1,0 +1,13 @@
+---
+- name: ubuntu - ensure presence of {{ rob.username }}'s packages
+  apt:
+    name: "{{ rob.ubuntu_packages }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 21600
+
+- name: ubuntu - ensure other groups for {{ rob.username }}
+  user:
+    name: "{{ rob.username }}"
+    append: yes
+    groups: "{{ rob.ubuntu_groups }}"
