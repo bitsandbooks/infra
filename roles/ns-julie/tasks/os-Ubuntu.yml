@@ -1,0 +1,13 @@
+---
+- name: ubuntu - ensure presence of {{ julie.username }}'s packages
+  apt:
+    name: "{{ julie.ubuntu_packages }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 21600
+
+- name: ubuntu - ensure other groups for user {{ julie.username }}
+  user:
+    name: "{{ julie.username }}"
+    append: yes
+    groups: "{{ julie.ubuntu_groups }}"
