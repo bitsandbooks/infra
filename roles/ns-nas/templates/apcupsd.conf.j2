@@ -1,6 +1,6 @@
 # /etc/apcupsd/apcupsd.conf
 # Managed by Ansible - DO NOT EDIT BY HAND
-UPSNAME myups
+UPSNAME {{ ansible_hostname }}-ups
 UPSCABLE usb
 UPSTYPE usb
 DEVICE

@@ -49,19 +49,23 @@
     - start netatalk
     - start samba
 
-- name: ubuntu - ensure apcupsd configuration files are present
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+- name: ubuntu - ensure apcupsd config template is present
+  template:
+    src: apcupsd.conf.j2
+    dest: /etc/apcupsd/apcupsd.conf
     owner: root
     group: root
   notify: 
     - restart apcupsd
-  with_items:
-    - src: apcupsd.conf
-      dest: /etc/apcupsd/apcupsd.conf
-    - src: apcupsd.default
-      dest: /etc/default/apcupsd
+
+- name: ubuntu - ensure apcupsd configuration files are present
+  copy:
+    src: apcupsd.default
+    dest: /etc/default/apcupsd
+    owner: root
+    group: root
+  notify: 
+    - restart apcupsd
 
 - name: ubuntu - ensure plexmediaserver package is present (this might take a while)
   apt:
